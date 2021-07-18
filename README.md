@@ -1,2 +1,2 @@
 # GameJam-Networking
-P2P networking for small game jams
+P2P networking in GMS2.3.3 for game jams
