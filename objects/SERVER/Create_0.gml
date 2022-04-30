@@ -44,3 +44,12 @@ enum network_events {
 	
 }
 
+enum network_custom_events {
+	start_game,
+	end_game,
+	build_room,
+	set_seed,
+	room_swap,
+	game_over,
+	game_win
+}
