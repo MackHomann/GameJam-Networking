@@ -1,7 +1,6 @@
 /// @description 
 server_active = (instance_exists(SERVER));
 
-
 if (server_active && network_has_networking) {
 	
 	instance_setup_paired_ids();
@@ -15,4 +14,5 @@ if (server_active && network_has_networking) {
 	}
 	
 } 
+
 

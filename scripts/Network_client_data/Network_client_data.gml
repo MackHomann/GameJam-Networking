@@ -60,7 +60,7 @@ function network_client_data() {
 			#endregion
 	        break;
 			
-		case network_events.update_visuals_basic:
+		case network_events.update_visuals_basic: // unfinished
 		#region
 			
 			#endregion;
@@ -206,6 +206,81 @@ function network_client_data() {
 			#endregion
 			break;
 			
+		case network_events.give_instance_control:
+		#region 
+			var _count = buffer_read(_buffer, buffer_u8);
+			
+			repeat(_count) {
+				var _inst = string(buffer_read(_buffer, buffer_string));
+				if (instance_exists(_inst))	{
+					_inst.in_control = true;	
+				}
+			}
+			#endregion
+			break;
+		
+		case network_events.client_run_function: 
+		#region
+			
+			var _inst		= real(buffer_read(_buffer, buffer_string));
+			var _function	= buffer_read(_buffer, buffer_u16); 
+			var _arguments	= buffer_read(_buffer, buffer_u8); 
+			
+			argument_array = [];
+			
+			for (var i = 0; i < _arguments; ++i) {
+				
+				var _type	= buffer_read(_buffer, buffer_u8);
+				var _arg	= buffer_read(_buffer, _type);
+				
+				if (_type == buffer_string) {
+					if (string_count("@:", _arg) > 0) { 
+						var _arg = string_replace(_arg, "@:", ""); // @: var name
+						if (variable_instance_exists(_inst, _arg)) {
+							var _value = variable_instance_get(_inst, _arg);
+						}
+						argument_array[i] = _value;
+						
+					} else {
+						argument_array[i] = _arg;
+					}
+				} else { // Value is int or float.
+					argument_array[i] = _arg;
+				}
+			}
+			try{
+				script_execute_ext(real(_function), argument_array);
+			} catch(_failed) {
+				log("The script that was recived failed to run....")
+				log(_failed.message);
+			}
+			argument_array = 0;
+
+			#endregion
+			break;
+			
+		case network_events.channel_message:
+		#region
+		
+			var _lane	 = buffer_read(_buffer, buffer_u8);
+			var _message = buffer_read(_buffer, buffer_string);
+			
+			ds_list_add(chat_channel[| _lane], _message);
+			
+			#endregion
+			break;
+			
+		case network_events.network_function_list: // unfinished
+		#region
+			
+			#endregion
+			break;
+			
+		case network_events.instance_function_list: // unfinished
+		#region
+			
+			#endregion
+			break;
 	    default:
 	        // code here
 	        break;

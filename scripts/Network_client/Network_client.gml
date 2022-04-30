@@ -73,3 +73,21 @@ function network_client_give_instance_back_control() {
 	queue_packet(_buffer);
 	
 }
+	
+function network_client_run_function(_instance_id, _function) {
+	
+	var _buffer = build_packet(network_events.client_run_function);
+	var _count  = argument_count-2;
+	
+	buffer_write(_buffer, buffer_string, _instance_id);
+	buffer_write(_buffer, buffer_u16,	 _function);
+	buffer_write(_buffer, buffer_u8,	 _count);
+	
+	for (var i = 0; i < _count; ++i) {
+	    var _type = is_string(argument[i+2])? buffer_string : buffer_u16;
+		buffer_write(_buffer, buffer_u8, _type);
+		buffer_write(_buffer, _type, argument[i+2]);
+	}
+	
+	queue_packet(_buffer);
+} 
