@@ -13,15 +13,22 @@ instance_map = ds_map_create();
 
 auto_creation_paused = false;
 
+target_ip	= "127.0.0.1";
+target_port	= 25565;
+
 host			= -1;	// Bool checks are you a host or a client
 server			= -1;	// Hosted server id
 client			= -1;	// Client connected to the server
 authenticated	= false	// Used to check connecting client is on same version
 tick_speed		=  1;	// Frames, fps/tick_speed = ticks per second
 
-packet_stack = ds_stack_create();
+dynamic_tick_speed	= false;	// Tick speed that changes when needed
 
-max_packet_size = 512;	// bytes
+network_event_map	= ds_map_create();		// Event map, uses network_game_events as triggers
+packet_stack		= ds_stack_create();	// Stack packets to be send over network
+
+max_packet_size = 512;	// In bytes
+
 
 
 
@@ -38,13 +45,11 @@ enum network_events {
 	give_instance_control,
 	client_run_function,
 	channel_message,
-	network_function_list,	// unfinished
-	instance_function_list	// unfinished
-	
+	game_event
 	
 }
 
-enum network_custom_events {
+enum network_game_events {
 	start_game,
 	end_game,
 	build_room,

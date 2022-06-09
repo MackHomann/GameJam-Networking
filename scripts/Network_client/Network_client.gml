@@ -58,7 +58,7 @@ function network_client_give_instance_back_control() {
 	
 	buffer_write(_buffer, buffer_u8, 0);
 	
-	with(HAS_NETWORK_ENTITY) {
+	with(NETWORK_ENTITY) {
 		if (auto_fix_in_control && was_other_in_control) {
 			buffer_write(_buffer, buffer_string, string(other_id));
 			_count ++;

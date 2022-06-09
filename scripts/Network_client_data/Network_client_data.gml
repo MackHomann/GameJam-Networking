@@ -270,17 +270,12 @@ function network_client_data() {
 			#endregion
 			break;
 			
-		case network_events.network_function_list: // unfinished
+		case network_events.game_event:  // UNFINISHED
 		#region
 			
 			#endregion
 			break;
-			
-		case network_events.instance_function_list: // unfinished
-		#region
-			
-			#endregion
-			break;
+
 	    default:
 	        // code here
 	        break;

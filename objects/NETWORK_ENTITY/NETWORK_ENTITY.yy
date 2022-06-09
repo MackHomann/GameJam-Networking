@@ -40,7 +40,7 @@
     "path": "folders/Objects.yy",
   },
   "resourceVersion": "1.0",
-  "name": "HAS_NETWORK_ENTITY",
+  "name": "NETWORK_ENTITY",
   "tags": [],
   "resourceType": "GMObject",
 }
