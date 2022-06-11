@@ -13,3 +13,17 @@ function crop_packet(_packet) {
 	var _realsize = buffer_tell(_packet);
 	buffer_resize(_packet, _realsize +1);	
 }
+
+
+function send_packet_stack() {
+	while(ds_stack_size(packet_stack) > 0 and client != -1) {
+		var _packet = ds_stack_pop(packet_stack);
+		if (use_steam_networking) {
+			var _sent = steam_net_packet_send(client, _packet, buffer_get_size(_packet), steam_net_packet_type_reliable_buffer)
+			log(_sent);
+		} else {
+			network_send_packet(client, _packet, buffer_get_size(_packet));
+		}
+		buffer_delete(_packet);
+	}
+}

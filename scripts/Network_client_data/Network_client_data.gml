@@ -1,7 +1,4 @@
-function network_client_data() {
-	
-	var _map = async_load;
-	var _buffer = _map[? "buffer"];
+function network_client_data(_buffer) {
 	
 	buffer_seek(_buffer, buffer_seek_start, 0);
 	
@@ -60,7 +57,7 @@ function network_client_data() {
 			#endregion
 	        break;
 			
-		case network_events.update_visuals_basic: // unfinished
+		case network_events.update_visuals_basic: // UNFINISHED
 		#region
 			
 			#endregion;
@@ -168,7 +165,12 @@ function network_client_data() {
 		case network_events.kicked:
 		#region
 			if (client != -1) {
-				network_destroy(client);
+				// Fix this for steam.
+				if (use_steam_networking) {
+					steam_lobby_leave();
+				} else {
+					network_destroy(client);
+				}
 			}
 			#endregion
 			break;
@@ -187,9 +189,14 @@ function network_client_data() {
 					}
 					
 				} else {
-
+					// Fix this for steam.
 					network_client_kick();
-					network_destroy(client);
+					
+					if (use_steam_networking) {
+						
+					} else {
+						network_destroy(client);
+					}
 				}
 			} else {
 

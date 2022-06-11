@@ -1,5 +1,10 @@
 /// @description Creating server
 
+if (use_steam_networking) {
+	steam_lobby_create(steam_lobby_type_public, 2);
+	exit;
+}
+
 if (server = -1 and host = -1) {
 	
 	var port = target_port;

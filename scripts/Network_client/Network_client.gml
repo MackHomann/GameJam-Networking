@@ -24,7 +24,7 @@ function network_client_disconnect(){
 		
 		_key.in_control		= true;
 		
-		_key			= ds_map_find_next(INST_MAP, _key);
+		_key = ds_map_find_next(INST_MAP, _key);
 	}
 	
 }
@@ -46,9 +46,14 @@ function network_client_kick() {
 }
 
 function network_client_disconect_from_server() {
-	network_destroy(client);
-	client	= -1;
-	host	= -1;
+
+	if (use_steam_networking) {
+		steam_lobby_leave()
+	} else {
+		network_destroy(client);
+		client	= -1;
+		host	= -1;
+	}
 }
 	
 function network_client_give_instance_back_control() {
