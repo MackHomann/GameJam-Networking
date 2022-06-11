@@ -1,0 +1,6 @@
+# ignore steam files
+*.bat
+*.sh
+*.pdf
+*.html
+extensions/*
