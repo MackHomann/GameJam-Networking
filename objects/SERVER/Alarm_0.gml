@@ -14,7 +14,7 @@ var test = buffer_compress(_map_buffer, 0, buffer_tell(_map_buffer));
 log(buffer_get_size(test));
 buffer_delete(test);
 */
-
+//log(authenticated);
 if (authenticated and ds_map_size(INST_MAP) > 0) {
 	var _collective_packet_size = 0;
 	var _map_buffer		= build_packet(network_events.update_from_map);
@@ -33,16 +33,16 @@ if (authenticated and ds_map_size(INST_MAP) > 0) {
 			_buffer_in_use = true;
 			
 			buffer_write(_map_buffer, buffer_string, string(_target_inst));
-			buffer_write(_map_buffer, buffer_u8, ds_list_size(_inst_var_list));
+			buffer_write(_map_buffer, buffer_s8, ds_list_size(_inst_var_list));
 			
 			for (var i = 0; i < ds_list_size(_inst_var_list); ++i) {
 					
 				var _var_name	= _inst_var_list[|i];
 				var _var_value	= variable_instance_get(real(_key), string(_inst_var_list[|i]));
-				var _type		= is_string(_var_value) ? buffer_string : buffer_u16;
+				var _type		= is_string(_var_value) ? buffer_string : buffer_s16;
 
 				buffer_write(_map_buffer, buffer_string, _var_name);	
-				buffer_write(_map_buffer, buffer_u8,	 _type);	
+				buffer_write(_map_buffer, buffer_s8,	 _type);	
 				buffer_write(_map_buffer, _type,		 _var_value);	
 
 			}

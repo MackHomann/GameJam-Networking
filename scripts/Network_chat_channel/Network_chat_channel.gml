@@ -8,7 +8,7 @@ function build_chat_channels() {
 
 function network_message_send(_channel, _string) {
 	var _buffer = build_packet(network_events.channel_message);
-	buffer_write(_buffer, buffer_u8, _channel);
+	buffer_write(_buffer, buffer_s8, _channel);
 	buffer_write(_buffer, buffer_string, _string);
 	
 	queue_packet(_buffer);

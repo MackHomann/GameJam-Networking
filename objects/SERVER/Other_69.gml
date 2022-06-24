@@ -4,7 +4,6 @@
 AUTO_CREATE_PAUSED = true;
 var _map		= async_load;
 var _event_type = _map[? "event_type"];
-log(_event_type);
 
 switch (_event_type) {
 	#region lobby created (server)
@@ -13,6 +12,7 @@ switch (_event_type) {
         if (_map[? "success"]) {
 			server = steam_id_create( _map[?"lobby_id_high"], _map[?"lobby_id_low"]);
 			host   = true;
+			alarm[0] = 1;
 			//steam_lobby_activate_invite_overlay();
 		}
 		
@@ -35,6 +35,7 @@ switch (_event_type) {
 	
 	#region	p2p session request (server)
 	case "p2p_session_request":
+		
 		steam_net_accept_p2p_session(steam_id_create(
 		    async_load[?"user_id_high"],
 		    async_load[?"user_id_low"]

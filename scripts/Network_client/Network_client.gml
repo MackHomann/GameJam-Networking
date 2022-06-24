@@ -33,8 +33,9 @@ function network_client_version_handshake() {
 	log("Sending handshake")
 	var _buffer = build_packet(network_events.version_handshake);
 	buffer_write(_buffer, buffer_string, string(VERSION));
-	network_send_packet(client, _buffer, buffer_get_size(_buffer));
-	buffer_delete(_buffer);
+	//network_send_packet(client, _buffer, buffer_get_size(_buffer));
+	//buffer_delete(_buffer);
+	queue_packet(_buffer);
 	
 }
 
@@ -61,7 +62,7 @@ function network_client_give_instance_back_control() {
 	var _buffer = build_packet(network_events.give_instance_control);
 	var _count	= 0;
 	
-	buffer_write(_buffer, buffer_u8, 0);
+	buffer_write(_buffer, buffer_s8, 0);
 	
 	with(NETWORK_ENTITY) {
 		if (auto_fix_in_control && was_other_in_control) {
@@ -73,7 +74,7 @@ function network_client_give_instance_back_control() {
 	}
 	
 	buffer_seek(_buffer, buffer_seek_start, 1);
-	buffer_write(_buffer, buffer_u8, _count);
+	buffer_write(_buffer, buffer_s8, _count);
 	
 	queue_packet(_buffer);
 	
@@ -85,12 +86,12 @@ function network_client_run_function(_instance_id, _function) {
 	var _count  = argument_count-2;
 	
 	buffer_write(_buffer, buffer_string, _instance_id);
-	buffer_write(_buffer, buffer_u16,	 _function);
-	buffer_write(_buffer, buffer_u8,	 _count);
+	buffer_write(_buffer, buffer_s16,	 _function);
+	buffer_write(_buffer, buffer_s8,	 _count);
 	
 	for (var i = 0; i < _count; ++i) {
-	    var _type = is_string(argument[i+2])? buffer_string : buffer_u16;
-		buffer_write(_buffer, buffer_u8, _type);
+	    var _type = is_string(argument[i+2])? buffer_string : buffer_s16;
+		buffer_write(_buffer, buffer_s8, _type);
 		buffer_write(_buffer, _type, argument[i+2]);
 	}
 	

@@ -19,6 +19,15 @@ function update_steam_networking(){
 				    steam_lobby_steam_ids[i] = steam_lobby_get_member_id(i);
 					if (steam_lobby_steam_ids[i] != steam_user_id) {
 						client = steam_lobby_steam_ids[i];
+						if (client != -1) {
+							var _buffer = build_packet(network_events.game_event);
+							buffer_write(_buffer, buffer_s8, network_game_events.pre_client_connect);
+							queue_packet(_buffer);
+						}
+						if (host) {
+							network_client_version_handshake();
+						}
+						
 					}
 				}
 			}

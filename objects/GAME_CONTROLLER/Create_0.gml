@@ -10,16 +10,15 @@ enum channel {
 
 build_chat_channels();
 
-
 globalvar use_steam_networking, steam_user_id;
 steam_user_id		 = -1;
 
 if(steam_initialised() && steam_is_user_logged_on()) {
     steam_user_id		 = steam_get_user_steam_id();
-	use_steam_networking = true;
+	use_steam_networking = false;
+	steam_net_set_auto_accept_p2p_sessions(true);
 }
 
-steam_net_set_auto_accept_p2p_sessions(true);
 
 //avatar_sprite = -1;
 //if (avatar_sprite = -1) {

@@ -1,8 +1,8 @@
 function network_client_data(_buffer) {
-	
+	AUTO_CREATE_PAUSED = true;
 	buffer_seek(_buffer, buffer_seek_start, 0);
 	
-	var _buffer_event = buffer_read(_buffer, buffer_u8);
+	var _buffer_event = buffer_read(_buffer, buffer_s8);
 	
 	switch (_buffer_event) {
 		
@@ -33,10 +33,10 @@ function network_client_data(_buffer) {
 		#region
 			log("Type : network_events.create_instance");
 			
-			var _obj_index		=	buffer_read(_buffer, buffer_u8);
+			var _obj_index		=	buffer_read(_buffer, buffer_s8);
 			var _other_inst_id	=	buffer_read(_buffer, buffer_string);
-			var _x				=	buffer_read(_buffer, buffer_u16);
-			var _y				=	buffer_read(_buffer, buffer_u16);
+			var _x				=	buffer_read(_buffer, buffer_s16);
+			var _y				=	buffer_read(_buffer, buffer_s16);
 			
 			var _inst = instance_create_depth(_x, _y, depth, _obj_index);
 			with(_inst) {
@@ -51,9 +51,11 @@ function network_client_data(_buffer) {
 			buffer_write(_return_buffer, buffer_string, string(_other_inst_id));
 			buffer_write(_return_buffer, buffer_string, string(_inst.id));
 			
-			network_send_packet(client, _return_buffer, buffer_get_size(_return_buffer));
+			//network_send_packet(client, _return_buffer, buffer_get_size(_return_buffer));
+			//buffer_delete(_return_buffer);
 			
-			buffer_delete(_return_buffer);
+			queue_packet(_return_buffer);
+			
 			#endregion
 	        break;
 			
@@ -67,13 +69,16 @@ function network_client_data(_buffer) {
 		#region
 			log("Type : network_events.update_position");
 			var _inst_id	= buffer_read(_buffer, buffer_string);
-			var _x		    = buffer_read(_buffer, buffer_u16);
-			var _y		    = buffer_read(_buffer, buffer_u16);
+			var _x		    = buffer_read(_buffer, buffer_s16);
+			var _y		    = buffer_read(_buffer, buffer_s16);
 			
 			with(_inst_id) {
 				x = _x;
 				y = _y;
+				
+				has_updated_this_frame =  true;
 			}
+				
 			#endregion
 			break;
 			
@@ -85,17 +90,20 @@ function network_client_data(_buffer) {
 			
 			while(!is_undefined(_get_targ_inst)) {
 				var _targ_inst = real(_get_targ_inst);
-				var _var_count = (buffer_read(_buffer, buffer_u8));
+				var _var_count = (buffer_read(_buffer, buffer_s8));
 				
 				repeat(_var_count) {
 					var _var_name	 = (buffer_read(_buffer, buffer_string));
-					var _buffer_type = (buffer_read(_buffer, buffer_u8));
+					var _buffer_type = (buffer_read(_buffer, buffer_s8));
 					var _var_value	 = (buffer_read(_buffer, _buffer_type));
 					
 					if (instance_exists(_targ_inst)) {
 						variable_instance_set(_targ_inst, _var_name, _var_value);
-					}
-					
+					}	
+				}
+				
+				if (instance_exists(_targ_inst)) {
+					_targ_inst.has_updated_this_frame =  true;	
 				}
 				
 				var _get_targ_inst = buffer_read(_buffer, buffer_string);
@@ -116,7 +124,7 @@ function network_client_data(_buffer) {
 			var _return_buffer		= build_packet(network_events.sync_inst_ids);
 			var _buffer_in_use		= false;
 			
-			var _inst_object_index	= buffer_read(_buffer, buffer_u16);
+			var _inst_object_index	= buffer_read(_buffer, buffer_s16);
 			var _other_inst			= buffer_read(_buffer, buffer_string);
 			
 			while(_other_inst != "") {
@@ -131,10 +139,10 @@ function network_client_data(_buffer) {
 				buffer_write(_return_buffer, buffer_string, string(_inst_id));
 				_buffer_in_use = true;
 				
-				var _var_count = (buffer_read(_buffer, buffer_u8));
+				var _var_count = (buffer_read(_buffer, buffer_s8));
 				repeat(_var_count) {
 					var _var_name	 = (buffer_read(_buffer, buffer_string));
-					var _buffer_type = (buffer_read(_buffer, buffer_u8));
+					var _buffer_type = (buffer_read(_buffer, buffer_s8));
 					var _var_value	 = (buffer_read(_buffer, _buffer_type));
 					
 					if (instance_exists(_inst_id)) {
@@ -143,7 +151,7 @@ function network_client_data(_buffer) {
 					
 				}
 				
-				var _inst_object_index	= buffer_read(_buffer, buffer_u16);
+				var _inst_object_index	= buffer_read(_buffer, buffer_s16);
 				var _other_inst			= buffer_read(_buffer, buffer_string);
 				
 				if (_other_inst = "") {
@@ -193,7 +201,7 @@ function network_client_data(_buffer) {
 					network_client_kick();
 					
 					if (use_steam_networking) {
-						
+						client = -1;
 					} else {
 						network_destroy(client);
 					}
@@ -215,7 +223,7 @@ function network_client_data(_buffer) {
 			
 		case network_events.give_instance_control:
 		#region 
-			var _count = buffer_read(_buffer, buffer_u8);
+			var _count = buffer_read(_buffer, buffer_s8);
 			
 			repeat(_count) {
 				var _inst = string(buffer_read(_buffer, buffer_string));
@@ -230,14 +238,14 @@ function network_client_data(_buffer) {
 		#region
 			
 			var _inst		= real(buffer_read(_buffer, buffer_string));
-			var _function	= buffer_read(_buffer, buffer_u16); 
-			var _arguments	= buffer_read(_buffer, buffer_u8); 
+			var _function	= buffer_read(_buffer, buffer_s16); 
+			var _arguments	= buffer_read(_buffer, buffer_s8); 
 			
 			argument_array = [];
 			
 			for (var i = 0; i < _arguments; ++i) {
 				
-				var _type	= buffer_read(_buffer, buffer_u8);
+				var _type	= buffer_read(_buffer, buffer_s8);
 				var _arg	= buffer_read(_buffer, _type);
 				
 				if (_type == buffer_string) {
@@ -269,7 +277,7 @@ function network_client_data(_buffer) {
 		case network_events.channel_message:
 		#region
 		
-			var _lane	 = buffer_read(_buffer, buffer_u8);
+			var _lane	 = buffer_read(_buffer, buffer_s8);
 			var _message = buffer_read(_buffer, buffer_string);
 			
 			ds_list_add(chat_channel[| _lane], _message);
@@ -279,7 +287,7 @@ function network_client_data(_buffer) {
 			
 		case network_events.game_event:  // UNFINISHED
 		#region
-			
+			log("p2p connection has been made");
 			#endregion
 			break;
 
@@ -289,6 +297,7 @@ function network_client_data(_buffer) {
 	};
 	
 	buffer_delete(_buffer);
+	AUTO_CREATE_PAUSED = false;
 };
 
 
