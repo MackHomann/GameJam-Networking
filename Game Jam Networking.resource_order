@@ -1,0 +1,17 @@
+{
+  "FolderOrderSettings":[],
+  "ResourceOrderSettings":[
+    {"name":"SERVER","order":2,"path":"objects/SERVER/SERVER.yy",},
+    {"name":"Singleton","order":1,"path":"scripts/Singleton/Singleton.yy",},
+    {"name":"Network_packet","order":4,"path":"scripts/Network_packet/Network_packet.yy",},
+    {"name":"Steamworks_gml","order":1,"path":"extensions/Steamworks_gml/Steamworks_gml.yy",},
+    {"name":"Network_steam","order":7,"path":"scripts/Network_steam/Network_steam.yy",},
+    {"name":"Network_chat_channel","order":5,"path":"scripts/Network_chat_channel/Network_chat_channel.yy",},
+    {"name":"NETWORK_ENTITY","order":1,"path":"objects/NETWORK_ENTITY/NETWORK_ENTITY.yy",},
+    {"name":"Network_instance_map","order":3,"path":"scripts/Network_instance_map/Network_instance_map.yy",},
+    {"name":"Game_events","order":6,"path":"scripts/Game_events/Game_events.yy",},
+    {"name":"Custom_scripts","order":2,"path":"scripts/Custom_scripts/Custom_scripts.yy",},
+    {"name":"Network_instance","order":2,"path":"scripts/Network_instance/Network_instance.yy",},
+    {"name":"Network_client_data","order":1,"path":"scripts/Network_client_data/Network_client_data.yy",},
+  ],
+}

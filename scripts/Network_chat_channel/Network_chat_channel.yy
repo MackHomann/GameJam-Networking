@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Networking",
-    "path": "folders/Scripts/Networking.yy",
+  "$GMScript":"",
+  "%Name":"Network_chat_channel",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Network_chat_channel",
+  "parent":{
+    "name":"Networking",
+    "path":"folders/Scripts/Networking.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "Network_chat_channel",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Networking",
-    "path": "folders/Scripts/Networking.yy",
+  "$GMScript":"",
+  "%Name":"Game_events",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Game_events",
+  "parent":{
+    "name":"Networking",
+    "path":"folders/Scripts/Networking.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "Game_events",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

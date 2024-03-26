@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Networking",
-    "path": "folders/Scripts/Networking.yy",
+  "$GMScript":"",
+  "%Name":"Network_instance",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Network_instance",
+  "parent":{
+    "name":"Networking",
+    "path":"folders/Scripts/Networking.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "Network_instance",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }
